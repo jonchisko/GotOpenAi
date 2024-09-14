@@ -1,12 +1,15 @@
 @tool
 extends EditorPlugin
 
+const _custom_type_name: String = "OpenAi"
 
 func _enter_tree() -> void:
-	# Initialization of the plugin goes here.
-	pass
-
+	add_custom_type(
+		_custom_type_name, 
+		"RefCounted",
+		preload("res://addons/got_open_ai/src/got_open_ai.gd"),
+		preload("res://icon.svg")
+		)
 
 func _exit_tree() -> void:
-	# Clean-up of the plugin goes here.
-	pass
+	remove_custom_type(_custom_type_name)	
