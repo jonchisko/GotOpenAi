@@ -11,10 +11,13 @@ var _description: String = ""
 var _parameters: Dictionary = {"type": PropertyTypes.json_object_to_string(PropertyTypes.Type.ObjectJson)}
 var _strict: bool = false 
 
+static func new(name: String) -> ToolBuilder:
+	return ToolBuilder.new(name)
+
 func _init(name: String):
 	self._name = name
 	
-func with_property(value: Property):
+func with_property(value: Property) -> ToolBuilder:
 	if not self._parameters.has(self._property_key):
 		self._parameters[self._property_key] = {}
 	
@@ -25,9 +28,13 @@ func with_property(value: Property):
 	
 	self._parameters[self._property_key][value.name] = value.get_property_data()
 	
-func with_properties(values: Array[Property]):
+	return self
+	
+func with_properties(values: Array[Property]) -> ToolBuilder:
 	for value in values:
 		self.with_property(value)
+		
+	return self
 	
 func build() -> Tool:
 	return Tool.new(self._name, self._description, self._parameters, self._strict)

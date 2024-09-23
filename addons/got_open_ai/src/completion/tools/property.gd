@@ -2,11 +2,11 @@ extends RefCounted
 
 class_name Property
 
-var _name: String = ""
-var _type: PropertyTypes.Type = PropertyTypes.Type.ObjectJson
-var _description: String = ""
-var _enum_values: Array[String] = []
-var _required: bool = false
+var _name: String
+var _type: PropertyTypes.Type
+var _description: String
+var _enum_values: Array[String]
+var _required: bool
 
 var name: String:
 	get:

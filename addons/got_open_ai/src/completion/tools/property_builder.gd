@@ -8,18 +8,24 @@ var _description: String = ""
 var _enum_values: Array[String] = []
 var _required: bool = false
 
+static func new(name: String, type: PropertyTypes.Type) -> PropertyBuilder:
+	return PropertyBuilder.new(name, type)
+
 func _init(name: String, type: PropertyTypes.Type):
 	self._name = name
 	self._type = type
 	
-func with_description(value: String):
+func with_description(value: String) -> PropertyBuilder:
 	self._description = value
+	return self
 
-func with_enum_values(value: Array[String]):
+func with_enum_values(value: Array[String]) -> PropertyBuilder:
 	self._enum_values = value
+	return self
 	
-func with_required(value: bool):
+func with_required(value: bool) -> PropertyBuilder:
 	self._required = value
+	return self
 
 func build() -> Property:
 	return Property.new(self._name, self._type, self._description, self._enum_values, self._required)
