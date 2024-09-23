@@ -1,4 +1,4 @@
-extends HTTPRequest
+extends TemplateBase
 
 class_name Template
 
@@ -13,4 +13,6 @@ func _init(configuration: Configuration, temperature: float, streaming: bool, st
 	self._temperature = temperature
 	self._streaming = streaming
 	self._static_context = static_contex
-	
+
+func get_response() -> void:
+	pass
