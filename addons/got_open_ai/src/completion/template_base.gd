@@ -35,6 +35,21 @@ func clear_static_context() -> TemplateBase:
 	self._static_context.clear()
 	return self 
 
+func prepend_message(role: String, content: String) -> TemplateBase:
+	self._message_data.push_front({self._role_key: role, self._content_key: content})
+	return self
+	
+func prepend_message_dictionary(role_content: Dictionary) -> TemplateBase:
+	if not role_content.has(self._role_key) or not role_content.has(self._content_key):
+		return
+	self._message_data.push_front(role_content)
+	return self
+	
+func prepend_messages(messages: Array[Dictionary]) -> TemplateBase:
+	for message in messages:
+		self.prepend_message_dictionary(message)
+	return self
+
 func append_message(role: String, content: String) -> TemplateBase:
 	self._append_message(role, content, self._message_data)
 	return self
