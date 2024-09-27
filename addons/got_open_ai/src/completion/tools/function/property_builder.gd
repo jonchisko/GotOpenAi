@@ -23,8 +23,8 @@ func with_enum_values(value: Array[String]) -> PropertyBuilder:
 	self._enum_values = value
 	return self
 	
-func with_required(value: bool) -> PropertyBuilder:
-	self._required = value
+func with_required() -> PropertyBuilder:
+	self._required = true
 	return self
 
 func build() -> Property:

@@ -16,4 +16,4 @@ config/icon="res://icon.svg"
 
 [editor_plugins]
 
-enabled=PackedStringArray()
+enabled=PackedStringArray("res://addons/got_open_ai/plugin.cfg", "res://addons/gut/plugin.cfg")

@@ -10,13 +10,37 @@ const _method: HTTPClient.Method = HTTPClient.METHOD_POST
 const _role_key: String = "role"
 const _content_key: String = "content"
 const _model_key: String = "model"
-const _message_key: String = "messages"
+const _messages_key: String = "messages"
+
+var _configuration: Configuration
 
 var _static_context: Array[Dictionary]
 var _message_data: Array[Dictionary]
 
-func get_response() -> void:
-	pass
+func _init(configuration: Configuration):
+	self._configuration = configuration
+
+func construct_data() -> Dictionary:
+	return {}
+
+func get_reply() -> void:
+	var headers = PackedStringArray([
+		self._content_type, 
+		self._authorization_bearer.format({"key": self._configuration.api_key})
+	])
+	
+	var data: Dictionary = {}
+	data[self._model_key] = self._configuration.model
+	
+	var combined_messages: Array[Dictionary] = self._static_context + self._message_data
+	data[self._messages_key] = combined_messages
+	
+	var template_specific_data = self.construct_data()
+	data.merge(template_specific_data)
+	
+	var request_data = JSON.stringify(data)
+	print(request_data)
+	#self.request(self._url, headers, self._method, request_data)
 
 func append_static_context(role: String, content: String) -> TemplateBase:
 	self._append_message(role, content, self._static_context)

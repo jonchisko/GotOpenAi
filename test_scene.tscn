@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://q8qowf0ebsa8"]
+
+[ext_resource type="Script" path="res://addons/got_open_ai/src/got_open_ai.gd" id="1_ys6xy"]
+
+[node name="TestScene" type="Node2D"]
+
+[node name="GotOpenAi" type="Node" parent="."]
+script = ExtResource("1_ys6xy")

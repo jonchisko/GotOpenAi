@@ -2,22 +2,22 @@ extends TemplateBase
 
 class_name Template
 
-var _configuration: Configuration
-
 var _temperature: float
 var _frequency_penalty: float
 var _presence_penalty: float
 var _log_probs: bool = false
 var _max_completion_tokens: int
 var _n_choices: int
-var _tools: Array[Tool]
+var _tools: Array[Dictionary]
+var _tool_choice: String
+var _stop: Array[String]
 var _response_format: String
 var _streaming: bool
 
 func _init(configuration: Configuration, temperature: float, frequency_penalty: float,
 presence_penalty: float, log_probs: bool, max_completion_tokens: int, n_choices: int,
-tools: Array[Tool], response_format: String, streaming: bool):
-	self._configuration = configuration
+tools: Array[Dictionary], tool_choice: String, stop: Array[String], response_format: String, streaming: bool):
+	super(configuration)
 	self._temperature = temperature
 	self._frequency_penalty = frequency_penalty
 	self._presence_penalty = presence_penalty
@@ -25,67 +25,33 @@ tools: Array[Tool], response_format: String, streaming: bool):
 	self._max_completion_tokens = max_completion_tokens
 	self._n_choices = n_choices
 	self._tools = tools
+	self._tool_choice = tool_choice
+	self._stop = stop
 	self._response_format = response_format
 	self._streaming = streaming
 
-# in this one just have a virtual that constructs and in base you have the http request buildup
-func get_response() -> void:
-	print(self._url)
-	print(self._method)
-	var headers = PackedStringArray([
-		self._content_type,
-		self._authorization_bearer.format({"api": self._configuration.api_key})])
-	var msgs = self._static_context + self._message_data
-	print(msgs)
-	print(headers)
-	print(JSON.stringify(self._message_data))
-	#self.request(self._url, self._custom_headers, self._method, JSON.stringify(self._message_data))
-#var _gpt_model: String = "gpt-4"
-#var _message_data: Dictionary = {"model" : self._gpt_model, "messages" : []}
 
-func construct_data():
+func construct_data() -> Dictionary:
 	var data: Dictionary = {}
 	
+	data["temperature"] = self._temperature
+	data["frequency_penalty"] = self._frequency_penalty
+	data["presence_penalty"] = self._presence_penalty
+	data["logprobs"] = self._log_probs
 	
-"""
-curl https://api.openai.com/v1/chat/completions \
--H "Content-Type: application/json" \
--H "Authorization: Bearer $OPENAI_API_KEY" \
--d '{
-  "model": "gpt-4o",
-  "messages": [
-	{
-	  "role": "user",
-	  "content": "What'\''s the weather like in Boston today?"
-	}
-  ],
-  "tools": [
-	{
-	  "type": "function",
-	  "function": {
-		"name": "get_current_weather",
-		"description": "Get the current weather in a given location",
-		"parameters": {
-		  "type": "object",
-		  "properties": {
-			"location": {
-			  "type": "string",
-			  "description": "The city and state, e.g. San Francisco, CA"
-			},
-			"unit": {
-			  "type": "string",
-			  "enum": ["celsius", "fahrenheit"]
-			}
-		  },
-		  "required": ["location"]
-		}
-	  }
-	}
-  ],
-  "tool_choice": "auto"
-}'
-
-	"logprobs": true,
-	"top_logprobs": 2
-
-"""
+	data["n"] = self._n_choices
+	data["streaming"] = self._streaming
+	
+	if not self._tool_choice.is_empty():
+		data["tool_choice"] = self._tool_choice
+	if self._max_completion_tokens >= 0:
+		data["max_completion_tokenes"] = self._max_completion_tokens
+	if self._tools.size() > 0:
+		data["tools"] = self._tools
+		data["tool_choice"] = self._tool_choice
+	if self._stop.size() > 0:
+		data["stop"] = self._stop
+	if not self._response_format.is_empty():
+		data["response_format"] = self._response_format
+	
+	return data
