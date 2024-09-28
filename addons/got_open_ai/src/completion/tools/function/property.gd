@@ -24,6 +24,8 @@ func _init(name: String, type: PropertyTypes.Type, description: String, _enum_va
 	self._required = required
 
 func get_property_data(with_name: bool = false) -> Dictionary:
+	# TODO think about just changing to always returning a dictionary and then
+	# extending them in the function call
 	if with_name:
 		return self._construct_dictionary_representation()
 	return self._construct_dictionary_representation()[self._name]
