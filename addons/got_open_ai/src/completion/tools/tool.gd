@@ -10,3 +10,6 @@ func _init(type: ToolTypes.Type, name: String, description: String):
 	self._type = type
 	self._name = name
 	self._description = description
+	
+func get_tool_data() -> Dictionary:
+	return {}

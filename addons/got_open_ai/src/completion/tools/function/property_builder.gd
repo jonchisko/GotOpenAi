@@ -6,7 +6,6 @@ var _name: String = ""
 var _type: PropertyTypes.Type = PropertyTypes.Type.ObjectJson
 var _description: String = ""
 var _enum_values: Array[String] = []
-var _required: bool = false
 
 static func new(name: String, type: PropertyTypes.Type) -> PropertyBuilder:
 	return PropertyBuilder.new(name, type)
@@ -22,10 +21,6 @@ func with_description(value: String) -> PropertyBuilder:
 func with_enum_values(value: Array[String]) -> PropertyBuilder:
 	self._enum_values = value
 	return self
-	
-func with_required() -> PropertyBuilder:
-	self._required = true
-	return self
 
 func build() -> Property:
-	return Property.new(self._name, self._type, self._description, self._enum_values, self._required)
+	return Property.new(self._name, self._type, self._description, self._enum_values)

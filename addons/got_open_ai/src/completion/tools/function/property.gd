@@ -6,29 +6,19 @@ var _name: String
 var _type: PropertyTypes.Type
 var _description: String
 var _enum_values: Array[String]
-var _required: bool
 
 var name: String:
 	get:
 		return self._name
-		
-var required: bool:
-	get:
-		return self._required
 
-func _init(name: String, type: PropertyTypes.Type, description: String, _enum_values: Array[String], required: bool):
+func _init(name: String, type: PropertyTypes.Type, description: String, _enum_values: Array[String]):
 	self._name = name
 	self._type = type
 	self._description = description
 	self._enum_values = _enum_values
-	self._required = required
 
-func get_property_data(with_name: bool = false) -> Dictionary:
-	# TODO think about just changing to always returning a dictionary and then
-	# extending them in the function call
-	if with_name:
-		return self._construct_dictionary_representation()
-	return self._construct_dictionary_representation()[self._name]
+func get_property_data() -> Dictionary:
+	return self._construct_dictionary_representation()
 
 func _to_string():
 	return JSON.stringify(self._construct_dictionary_representation())

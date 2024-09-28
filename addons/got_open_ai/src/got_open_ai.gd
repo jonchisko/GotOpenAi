@@ -9,20 +9,20 @@ func _ready() -> void:
 	.with_description("Sums two values.")\
 	.with_property(
 		PropertyBuilder.new("a", PropertyTypes.Type.NumberJson)\
-			.with_required().build())\
+			.build(), true)\
 	.with_property(
 		PropertyBuilder.new("b", PropertyTypes.Type.NumberJson)\
-			.with_required().build())\
+			.build(), true)\
 	.build()
 	
 	var toolB: Tool = FunctionToolBuilder.new("div")\
 	.with_description("Divides two values.")\
 	.with_property(
 		PropertyBuilder.new("a", PropertyTypes.Type.NumberJson)\
-			.with_description("Number to be divided.").with_required().build())\
+			.with_description("Number to be divided.").build(), true)\
 	.with_property(
 		PropertyBuilder.new("b", PropertyTypes.Type.NumberJson)\
-			.with_description("Number that divides.").with_required().build())\
+			.with_description("Number that divides.").build(), false)\
 	.build()
 	
 	var configuration: Configuration = Configuration.new("gpt-3", "api_key")
