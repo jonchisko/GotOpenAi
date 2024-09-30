@@ -1,4 +1,4 @@
-extends RefCounted
+extends PropertyBase
 
 class_name Property
 
@@ -7,21 +7,17 @@ var _type: PropertyTypes.Type
 var _description: String
 var _enum_values: Array[String]
 
-var name: String:
-	get:
-		return self._name
-
 func _init(name: String, type: PropertyTypes.Type, description: String, _enum_values: Array[String]):
 	self._name = name
 	self._type = type
 	self._description = description
 	self._enum_values = _enum_values
 
+func name() -> String:
+	return self._name
+
 func get_property_data() -> Dictionary:
 	return self._construct_dictionary_representation()
-
-func _to_string():
-	return JSON.stringify(self._construct_dictionary_representation())
 	
 func _construct_dictionary_representation() -> Dictionary:
 	var data: Dictionary = {}

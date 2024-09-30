@@ -2,11 +2,8 @@ extends Tool
 
 class_name FunctionTool
 
-const _property_key: String = "properties"
-const _required_key: String = "required"
-
-var _parameters: Dictionary = {"type": PropertyTypes.json_object_to_string(PropertyTypes.Type.ObjectJson)}
-var _strict: bool = false 
+var _parameters: Dictionary
+var _strict: bool
 
 func _init(name: String, description: String, parameters: Dictionary, strict: bool):
 	super(ToolTypes.Type.Function, name, description)
@@ -24,7 +21,7 @@ func get_tool_data() -> Dictionary:
 	if not self._description.is_empty():
 		data[ToolTypes.json_object_to_string(self._type)]["description"] = self._description
 		
-	if self._parameters.size() > 1:
+	if self._parameters.size() > 1: # must be larger than 1, cuz type is always present
 		data[ToolTypes.json_object_to_string(self._type)]["parameters"] = self._parameters
 		
 	return data

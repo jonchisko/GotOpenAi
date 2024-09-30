@@ -29,8 +29,8 @@ func test_create_default_basic_property():
 	
 	# Assert
 	assert_true(data.has(self._property_name), "Property name is missing from data.")
-	assert_true(data[_property_name].has(self._type_key), "Property type is missing from data.")
-	assert_eq(nullJson, data[_property_name][self._type_key], "Property type should be 'NullJson'.")
+	assert_true(data[self._property_name].has(self._type_key), "Property type is missing from data.")
+	assert_eq(nullJson, data[self._property_name][self._type_key], "Property type should be 'NullJson'.")
 	
 
 func test_create_property_with_all_aditional_fields():
@@ -67,7 +67,7 @@ var parameter_types_test = ParameterFactory.named_parameters(
 	
 func test_create_property_with_all_types(params=use_parameters(parameter_types_test)):
 	# Arrange
-	var property: Property = PropertyBuilder.new(_property_name, params.parameter_type).build()
+	var property: Property = PropertyBuilder.new(self._property_name, params.parameter_type).build()
 	
 	# Act
 	var data: Dictionary = property.get_property_data()

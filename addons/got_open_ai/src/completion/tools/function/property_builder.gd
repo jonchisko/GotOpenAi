@@ -22,5 +22,5 @@ func with_enum_values(value: Array[String]) -> PropertyBuilder:
 	self._enum_values = value
 	return self
 
-func build() -> Property:
+func build() -> PropertyBase:
 	return Property.new(self._name, self._type, self._description, self._enum_values)
