@@ -1,4 +1,4 @@
-extends HTTPRequest
+extends RefCounted
 
 class_name TemplateBase
 
@@ -13,7 +13,10 @@ const _model_key: String = "model"
 const _messages_key: String = "messages"
 
 var _configuration: Configuration
+var _open_ai_request: OpenAiRequestBase
 
+# TODO this should probably be added to another class that handles the messages
+# add the methods into that class as well
 var _static_context: Array[Dictionary]
 var _message_data: Array[Dictionary]
 
@@ -39,8 +42,16 @@ func get_reply() -> void:
 	data.merge(template_specific_data)
 	
 	var request_data = JSON.stringify(data)
+	
+	self._open_ai_request.request_data(self._url, headers, self._method, request_data)
+	self._open_ai_request.request_completed.connect(_on_request_completed)
+	
 	print(request_data)
 	#self.request(self._url, headers, self._method, request_data)
+
+func _on_request_completed(result, response_code, headers, body):
+	var json = JSON.parse_string(body.get_string_from_utf8())
+	print(json["name"])
 
 func append_static_context(role: String, content: String) -> TemplateBase:
 	self._append_message(role, content, self._static_context)

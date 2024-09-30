@@ -2,6 +2,9 @@ extends RefCounted
 
 class_name Configuration
 
+# TODO remove the model and put it into the completion
+# TODO add a static class that returns different configurations and put the values
+# that are now in base template, there
 var _model: String
 var _api_key: String
 
