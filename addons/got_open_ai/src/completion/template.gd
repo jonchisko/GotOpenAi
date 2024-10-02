@@ -2,6 +2,7 @@ extends TemplateBase
 
 class_name Template
 
+var _model: String
 var _temperature: float
 var _frequency_penalty: float
 var _presence_penalty: float
@@ -14,10 +15,11 @@ var _stop: Array[String]
 var _response_format: String
 var _streaming: bool
 
-func _init(configuration: Configuration, temperature: float, frequency_penalty: float,
+func _init(configuration: ApiConfiguration, open_ai_request: OpenAiRequestBase, message_manager: MessageManager, model: String, temperature: float, frequency_penalty: float,
 presence_penalty: float, log_probs: bool, max_completion_tokens: int, n_choices: int,
 tools: Array[Dictionary], tool_choice: String, stop: Array[String], response_format: String, streaming: bool):
-	super(configuration)
+	super(configuration, open_ai_request, message_manager)
+	self._model = model
 	self._temperature = temperature
 	self._frequency_penalty = frequency_penalty
 	self._presence_penalty = presence_penalty
@@ -34,6 +36,7 @@ tools: Array[Dictionary], tool_choice: String, stop: Array[String], response_for
 func construct_data() -> Dictionary:
 	var data: Dictionary = {}
 	
+	data["model"] = self._model
 	data["temperature"] = self._temperature
 	data["frequency_penalty"] = self._frequency_penalty
 	data["presence_penalty"] = self._presence_penalty

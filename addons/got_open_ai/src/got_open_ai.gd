@@ -25,9 +25,11 @@ func _ready() -> void:
 			.with_description("Number that divides.").build(), false)\
 	.build()
 	
-	var configuration: Configuration = Configuration.new("gpt-3", "api_key")
 	
-	var gpt_object: TemplateBase = Completion.new(configuration)\
+	var user_configuration = UserConfiguration.new("api_key")
+	var api_configuration: ApiConfiguration = ApiConfigurationFactory.get_completion_configuration(user_configuration)
+	
+	var gpt_object: TemplateBase = Completion.new(api_configuration, DisplayRequest.new(), MessageManager.new())\
 	.with_tool(toolA)\
 	.with_tool(toolB)\
 	.get_template()

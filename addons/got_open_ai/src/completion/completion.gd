@@ -2,10 +2,13 @@ extends RefCounted
 
 class_name Completion
 
-var _configuration: Configuration
+var _configuration: ApiConfiguration
+var _open_ai_request: OpenAiRequestBase
+var _message_manager: MessageManager
 
 const _max_n_choices: int = 10
 
+var _model: String = "gpt-3"
 var _temperature: float = 1.0
 var _frequency_penalty: float = 0.0
 var _presence_penalty: float = 0.0
@@ -18,8 +21,14 @@ var _stop: Array[String] = []
 var _response_format: String = "" 
 var _streaming: bool = false
 
-func _init(configuration: Configuration):
+func _init(configuration: ApiConfiguration, open_ai_request: OpenAiRequestBase, message_manager: MessageManager):
 	self._configuration = configuration
+	self._open_ai_request = open_ai_request
+	self._message_manager = message_manager
+
+func with_model(value: String) -> Completion:
+	self._model = value
+	return self
 
 func with_temperature(value: float) -> Completion:
 	self._temperature = clampf(value, 0.0, 2.0)
@@ -86,6 +95,7 @@ func with_streaming(value: bool) -> Completion:
 	return self
 
 func get_template() -> TemplateBase: # here it could be possible to return either Template or StreamingTemplate -> think if interface needed
-	return Template.new(self._configuration, self._temperature, self._frequency_penalty,
+	return Template.new(self._configuration, self._open_ai_request, self._message_manager, 
+	self._model, self._temperature, self._frequency_penalty,
 	self._presence_penalty, self._log_probs, self._max_completion_tokens, self._n_choices, 
 	self._tools, self._tool_choice, self._stop, self._response_format, self._streaming)
