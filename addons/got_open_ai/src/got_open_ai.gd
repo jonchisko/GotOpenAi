@@ -2,42 +2,17 @@ extends Node
 
 class_name GotOpenAi
 
+static var user_configuration: UserConfiguration
+
+static func GetPreviewCompletion() -> Completion:
+	var api_configuration: ApiConfiguration = ApiConfigurationFactory.get_completion_configuration(UserConfiguration.new("api_key"))
+	return Completion.new(api_configuration, DisplayRequest.new(), MessageManager.new())
+	
+static func GetGptCompletion() -> Completion:
+	if user_configuration == null:
+		printerr("User configuration is null. Set user configuration before requesting GptCompletion object.")
+	var api_configuration: ApiConfiguration = ApiConfigurationFactory.get_completion_configuration(user_configuration)
+	return Completion.new(api_configuration, OpenAiRequest.new(), MessageManager.new())
+
 func _ready() -> void:
 	print("Start init node of GotOpenAi")
-	
-	var toolA: Tool = FunctionToolBuilder.new("sum")\
-	.with_description("Sums two values.")\
-	.with_property(
-		PropertyBuilder.new("a", PropertyTypes.Type.NumberJson)\
-			.build(), true)\
-	.with_property(
-		PropertyBuilder.new("b", PropertyTypes.Type.NumberJson)\
-			.build(), true)\
-	.build()
-	
-	var toolB: Tool = FunctionToolBuilder.new("div")\
-	.with_description("Divides two values.")\
-	.with_property(
-		PropertyBuilder.new("a", PropertyTypes.Type.NumberJson)\
-			.with_description("Number to be divided.").build(), true)\
-	.with_property(
-		PropertyBuilder.new("b", PropertyTypes.Type.NumberJson)\
-			.with_description("Number that divides.").build(), false)\
-	.build()
-	
-	
-	var user_configuration = UserConfiguration.new("api_key")
-	var api_configuration: ApiConfiguration = ApiConfigurationFactory.get_completion_configuration(user_configuration)
-	
-	var gpt_object: TemplateBase = Completion.new(api_configuration, DisplayRequest.new(), MessageManager.new())\
-	.with_tool(toolA)\
-	.with_tool(toolB)\
-	.get_template()
-	
-	gpt_object.append_static_context("system", "You are a math teacher.")
-	gpt_object.append_static_context_dictionary({"role": "system", 
-	"message": "You should help your students."})
-	gpt_object.append_message("user", 
-	"How to calculate a diferential of a linear function?")
-	
-	gpt_object.get_reply()
