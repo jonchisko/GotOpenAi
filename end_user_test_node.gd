@@ -44,9 +44,9 @@ func _ready() -> void:
 	# for his solution
 	# the user at the end will need to enter it in UI. 
 	GotOpenAi.user_configuration = user_configuration
-	var gpt_fail_object = GotOpenAi.GetGptCompletion()
+	var _gpt_fail_object = GotOpenAi.GetGptCompletion()
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	pass
