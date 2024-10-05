@@ -3,7 +3,7 @@ extends OpenAiRequestBase
 class_name OpenAiRequest
 
 
-func request_data(url: String, headers: PackedStringArray, method: HTTPClient.Method, request_data: Dictionary) -> void:
+func request_data(url: String, headers: PackedStringArray, method: HTTPClient.Method, request_data: Dictionary) -> String:
 	var error: Error = 0
 	var http: HTTPClient = HTTPClient.new()
 	
@@ -42,3 +42,5 @@ func request_data(url: String, headers: PackedStringArray, method: HTTPClient.Me
 			returned_bytes = returned_bytes + chunk
 	var json_data = returned_bytes.get_string_from_ascii()
 	print("Text: ", json_data)
+	
+	return json_data

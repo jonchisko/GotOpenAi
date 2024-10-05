@@ -45,6 +45,16 @@ func _ready() -> void:
 	# the user at the end will need to enter it in UI. 
 	GotOpenAi.user_configuration = user_configuration
 	var _gpt_fail_object = GotOpenAi.GetGptCompletion()
+	
+	
+	var data = "{\"key\": [102020, 1122, 221]}"
+	var d = JSON.parse_string(data)
+	print(d)
+	print(d["key"])
+	print(type_string(typeof(d["key"])))
+	print(d["key"] is Array)
+	print(d["key"][1])
+	print(type_string(typeof(d["key"][1])))
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

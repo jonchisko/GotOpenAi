@@ -27,12 +27,8 @@ func get_reply() -> void:
 	var template_specific_data = self.construct_data()
 	data.merge(template_specific_data)
 	
-	var headers = PackedStringArray([
-		self._configuration.content_type(), 
-		self._configuration.authorization_bearer()
-	])
-
-	self._open_ai_request.request_data(self._configuration.url(), headers, self._configuration.method(), data)
+	var serialized_data: String = self._open_ai_request.request_data(self._configuration.url(), self._configuration.get_content_authorization_header(), self._configuration.method(), data)
+	var response: CompletionResponse = _process_response(serialized_data)
 	#self._open_ai_request.request_completed.connect(_on_request_completed)
 	
 	#print(request_data)
@@ -92,3 +88,18 @@ func clear_all_messages() -> TemplateBase:
 
 func show_messages() -> String:
 	return self._message_manager.show_messages()
+	
+func _process_response(serialized_data: String) -> CompletionResponse:
+	if serialized_data.is_empty():
+		print("Serialized data is empty.")
+		return null
+	
+	var dictionary = JSON.parse_string(serialized_data)
+	
+	var choices = dictionary["choices"]
+	var prompt_tokens = dictionary["usage"]["prompt_tokens"]
+	var completion_tokens = dictionary["usage"]["completion_tokens"]
+	var total_tokens = dictionary["usage"]["total_tokens"]
+	var completion_tokens_details = dictionary["usage"]["completion_tokens_details"]
+	
+	return CompletionResponse.new(choices, prompt_tokens, completion_tokens, total_tokens, completion_tokens_details)

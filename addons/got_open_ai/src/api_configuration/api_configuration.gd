@@ -22,6 +22,12 @@ func content_type() -> String:
 	
 func authorization_bearer() -> String:
 	return self._authorization_bearer.format({"key": self._user_configuration.api_key()})
+	
+func get_content_authorization_header() -> PackedStringArray:
+	return PackedStringArray([
+		content_type(), 
+		authorization_bearer()
+	])
 
 func method() -> HTTPClient.Method:
 	return self._method
