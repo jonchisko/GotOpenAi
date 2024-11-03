@@ -13,6 +13,9 @@ func _init() -> void:
 	
 func show_messages() -> String:
 	return JSON.stringify(self._message_data)
+	
+func show_context() -> String:
+	return JSON.stringify(self._static_context)
 
 func get_combined_message_data() -> Array[Dictionary]:
 	var combined: Array[Dictionary] = []
@@ -67,6 +70,8 @@ func _append_message(role: String, content: String, data: Array[Dictionary]) -> 
 	data.append({self._role_key: role, self._content_key: content})
 	
 func _append_message_dictionary(role_content: Dictionary, data: Array[Dictionary]) -> void:
-	if not role_content.has(self._role_key) or not role_content.has(self._content_key):
-			return
-	data.append(role_content)
+	var keys = role_content.keys()
+	if keys.size() == 0:
+		return
+		
+	data.append({self._role_key: keys[0], self._content_key: role_content[keys[0]]})
