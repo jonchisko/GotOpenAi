@@ -40,12 +40,20 @@ func _ready() -> void:
 	
 	# should fail
 	#var gpt_fail_object = GotOpenAi.GetGptCompletion()
-	var user_configuration = UserConfiguration.new(self.api_key) # TODO it s up to the dev from where the api will be read
+	var user_configuration = UserConfiguration.new(self.api_key)
 	# for his solution
 	# the user at the end will need to enter it in UI. 
 	GotOpenAi.user_configuration = user_configuration
 	var _gpt_fail_object = GotOpenAi.GetGptCompletion()
+	var response: CompletionResponse = _gpt_fail_object.get_template()\
+	.append_message("system", "You are a math teacher.")\
+	.append_message("user", "How to calculate a diferential of a linear function?")\
+	.get_reply()
 	
+	print(response.choices())
+	print(response.completion_tokens())
+	print(response.completion_tokens_details())
+	print(response.prompt_tokens())
 	
 	var data = "{\"key\": [102020, 1122, 221]}"
 	var d = JSON.parse_string(data)

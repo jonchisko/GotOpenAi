@@ -41,6 +41,5 @@ func request_data(url: String, headers: PackedStringArray, method: HTTPClient.Me
 		else:
 			returned_bytes = returned_bytes + chunk
 	var json_data = returned_bytes.get_string_from_ascii()
-	print("Text: ", json_data)
 	
 	return json_data
