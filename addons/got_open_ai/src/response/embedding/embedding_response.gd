@@ -4,7 +4,7 @@ class_name EmbeddingResponse
 
 var _successful: bool = false
 var _index: int = 0
-var _emebdding: Array[float] = []
+var _emebdding: Array = []
 var _prompt_tokens: int = 0
 var _total_tokens: int = 0
 
@@ -14,7 +14,7 @@ func successful() -> bool:
 func index() -> int:
 	return self._index
 
-func embedding() -> Array[float]:
+func embedding() -> Array:
 	return self._emebdding
 	
 func prompt_tokens() -> int:
@@ -23,7 +23,7 @@ func prompt_tokens() -> int:
 func total_tokens() -> int:
 	return self._total_tokens
 
-func _init(successful: bool, index: int = 0, embedding: Array[float] = [], prompt_tokens: int = 0, total_tokens: int = 0):
+func _init(successful: bool, index: int = 0, embedding: Array = [], prompt_tokens: int = 0, total_tokens: int = 0):
 	self._successful = successful
 	self._index = index
 	self._emebdding = embedding

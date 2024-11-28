@@ -13,11 +13,11 @@ var _tools: Array[Dictionary]
 var _tool_choice: String
 var _stop: Array[String]
 var _response_format: String
-var _streaming: bool
+var _stream: bool
 
 func _init(configuration: ApiConfiguration, open_ai_request: OpenAiRequestBase, message_manager: MessageManager, model: String, temperature: float, frequency_penalty: float,
 presence_penalty: float, log_probs: bool, max_completion_tokens: int, n_choices: int,
-tools: Array[Dictionary], tool_choice: String, stop: Array[String], response_format: String, streaming: bool):
+tools: Array[Dictionary], tool_choice: String, stop: Array[String], response_format: String, stream: bool):
 	super(configuration, open_ai_request, message_manager)
 	self._model = model
 	self._temperature = temperature
@@ -30,7 +30,7 @@ tools: Array[Dictionary], tool_choice: String, stop: Array[String], response_for
 	self._tool_choice = tool_choice
 	self._stop = stop
 	self._response_format = response_format
-	self._streaming = streaming
+	self._stream = stream
 
 
 func construct_data() -> Dictionary:
@@ -43,7 +43,7 @@ func construct_data() -> Dictionary:
 	data["logprobs"] = self._log_probs
 	
 	data["n"] = self._n_choices
-	data["streaming"] = self._streaming
+	data["stream"] = self._stream
 	
 	if not self._tool_choice.is_empty():
 		data["tool_choice"] = self._tool_choice

@@ -1,4 +1,4 @@
-extends HTTPRequest # TODO HTTP CLIENT CLASS NOT HTTP REQUEST
+extends Node
 
 class_name OpenAiRequestBase
 

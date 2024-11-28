@@ -5,11 +5,16 @@ class_name OpenAiRequest
 
 func request_data(url: String, headers: PackedStringArray, method: HTTPClient.Method, request_data: Dictionary) -> String:
 	var error: Error = 0
-	var http: HTTPClient = HTTPClient.new()
+	var http: HTTPClient = HTTPClient.new() # TODO: should be perhaps constructed just once in constructor.
 	
-	error = http.connect_to_host(url, 80)
+	var url_data = url.split(".com")
+	var url_base: String = "{url}.com".format({"url" : url_data[0]})
+	var end_point: String = url_data[1]
+
+	error = http.connect_to_host(url_base, 443)
 	if error != Error.OK:
 		printerr("Connecting to host failed.")
+		return ""
 	
 	while http.get_status() == HTTPClient.STATUS_CONNECTING or http.get_status() == HTTPClient.STATUS_RESOLVING:
 		http.poll()
@@ -17,10 +22,12 @@ func request_data(url: String, headers: PackedStringArray, method: HTTPClient.Me
 	
 	if http.get_status() != HTTPClient.STATUS_CONNECTED:
 		printerr("HTTPClient is not connected.")
+		return ""
 	
-	error = http.request(method, url, headers, JSON.stringify(request_data))
+	error = http.request(method, end_point, headers, JSON.stringify(request_data))
 	if error != Error.OK:
 		printerr("Something went wrong with the request.")
+		return ""
 	
 	while http.get_status() == HTTPClient.STATUS_REQUESTING:
 		http.poll()
@@ -28,9 +35,10 @@ func request_data(url: String, headers: PackedStringArray, method: HTTPClient.Me
 
 	if http.get_status() != HTTPClient.STATUS_BODY and http.get_status() != HTTPClient.STATUS_CONNECTED:
 		printerr("HTTP request did not finish well.")
+		return ""
 
 	if not http.has_response():
-		pass # TODO return NullResponseObject
+		return ""
 	
 	var returned_bytes = PackedByteArray()
 	while http.get_status() == HTTPClient.STATUS_BODY:

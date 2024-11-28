@@ -4,7 +4,7 @@ extends RefCounted
 class_name CompletionResponse
 
 var _successful: bool = false
-var _choices: Array[Dictionary] = []
+var _choices: Array = []
 var _prompt_tokens: int = 0
 var _completion_tokens: int = 0
 var _total_tokens: int = 0
@@ -13,7 +13,7 @@ var _completion_tokens_details: Dictionary = {}
 func successful() -> bool:
 	return self._successful
 
-func choices() -> Array[Dictionary]:
+func choices() -> Array:
 	return self._choices
 	
 func prompt_tokens() -> int:
@@ -28,7 +28,7 @@ func total_tokens() -> int:
 func completion_tokens_details() -> Dictionary:
 	return self._completion_tokens_details
 
-func _init(successful: bool, choices: Array[Dictionary] = [], prompt_tokens: int = 0, completion_tokens: int = 0, total_tokens: int = 0, completion_tokens_details: Dictionary = {}) -> void:
+func _init(successful: bool, choices: Array = [], prompt_tokens: int = 0, completion_tokens: int = 0, total_tokens: int = 0, completion_tokens_details: Dictionary = {}) -> void:
 	self._successful = successful
 	self._choices = choices
 	self._prompt_tokens = prompt_tokens

@@ -70,8 +70,6 @@ func _append_message(role: String, content: String, data: Array[Dictionary]) -> 
 	data.append({self._role_key: role, self._content_key: content})
 	
 func _append_message_dictionary(role_content: Dictionary, data: Array[Dictionary]) -> void:
-	var keys = role_content.keys()
-	if keys.size() == 0:
+	if not role_content.has(self._role_key) or not role_content.has(self._content_key):
 		return
-		
-	data.append({self._role_key: keys[0], self._content_key: role_content[keys[0]]})
+	data.append(role_content)

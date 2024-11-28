@@ -1,4 +1,4 @@
-extends RefCounted
+extends Node
 
 class_name TemplateBase
 
@@ -24,7 +24,7 @@ func get_reply() -> CompletionResponse:
 	var template_specific_data = self.construct_data()
 	data.merge(template_specific_data)
 	
-	var response: CompletionResponse = ResponseFactory.GetCompletionResponse(
+	var response: CompletionResponse = await ResponseFactory.GetCompletionResponse(
 		self._open_ai_request, 
 		self._configuration.url(),
 		self._configuration.get_content_authorization_header(), 

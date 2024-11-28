@@ -3,7 +3,7 @@ extends RefCounted
 class_name ResponseFactory
 
 static func GetCompletionResponse(requester: OpenAiRequestBase, url: String, headers: PackedStringArray, method: HTTPClient.Method, request_data: Dictionary) -> CompletionResponse:
-	var response_data: String = requester.request_data(url, headers, method, request_data)
+	var response_data: String = await requester.request_data(url, headers, method, request_data)
 	
 	if response_data == null or response_data.is_empty():
 		return CompletionResponse.new(false, [], 0, 0, 0, {})
@@ -19,7 +19,7 @@ static func GetCompletionResponse(requester: OpenAiRequestBase, url: String, hea
 	return CompletionResponse.new(true, choices, prompt_tokens, completion_tokens, total_tokens, completion_tokens_details)
 	
 static func GetEmbeddingResponse(requester: OpenAiRequestBase, url: String, headers: PackedStringArray, method: HTTPClient.Method, request_data: Dictionary) -> EmbeddingResponse:
-	var response_data: String = requester.request_data(url, headers, method, request_data)
+	var response_data: String = await requester.request_data(url, headers, method, request_data)
 	
 	if response_data == null or response_data.is_empty():
 		return EmbeddingResponse.new(false, 0, [], 0, 0)

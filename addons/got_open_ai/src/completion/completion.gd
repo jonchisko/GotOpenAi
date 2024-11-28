@@ -8,7 +8,7 @@ var _message_manager: MessageManager
 
 const _max_n_choices: int = 10
 
-var _model: String = "gpt-3"
+var _model: String = "gpt-3.5-turbo"
 var _temperature: float = 1.0
 var _frequency_penalty: float = 0.0
 var _presence_penalty: float = 0.0
@@ -19,7 +19,7 @@ var _tools: Array[Dictionary] = []
 var _tool_choice: String = ""
 var _stop: Array[String] = []
 var _response_format: String = "" 
-var _streaming: bool = false
+var _stream: bool = false
 
 func _init(configuration: ApiConfiguration, open_ai_request: OpenAiRequestBase, message_manager: MessageManager):
 	self._configuration = configuration
@@ -90,12 +90,12 @@ func with_response_format(value: String) -> Completion:
 		self._response_format = value
 	return self
 
-func with_streaming(value: bool) -> Completion:
-	self._streaming = value
+func with_stream(value: bool) -> Completion:
+	self._stream = value
 	return self
 
 func get_template() -> TemplateBase: # here it could be possible to return either Template or StreamingTemplate -> think if interface needed
 	return Template.new(self._configuration, self._open_ai_request, self._message_manager, 
 	self._model, self._temperature, self._frequency_penalty,
 	self._presence_penalty, self._log_probs, self._max_completion_tokens, self._n_choices, 
-	self._tools, self._tool_choice, self._stop, self._response_format, self._streaming)
+	self._tools, self._tool_choice, self._stop, self._response_format, self._stream)

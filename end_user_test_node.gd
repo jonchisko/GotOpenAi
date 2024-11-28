@@ -25,44 +25,42 @@ func _ready() -> void:
 			.with_description("Number that divides.").build(), false)\
 	.build()
 	
-	var gpt_object: TemplateBase = GotOpenAi.GetPreviewCompletion()\
+	var gpt_object: TemplateBase = $"../GotOpenAi".GetPreviewCompletion()\
 	.with_tool(toolA)\
 	.with_tool(toolB)\
 	.get_template()
 	
 	gpt_object.append_static_context("system", "You are a math teacher.")
-	gpt_object.append_static_context_dictionary({"role": "system", 
-	"message": "You should help your students."})
+	gpt_object.append_static_context_dictionary({"role": "system", "content": "You should help your students."})
 	gpt_object.append_message("user", 
 	"How to calculate a diferential of a linear function?")
 	
-	gpt_object.get_reply()
+	await gpt_object.get_reply()
 	
+	print("DO ACTUAL REQUEST")
 	# should fail
 	#var gpt_fail_object = GotOpenAi.GetGptCompletion()
 	var user_configuration = UserConfiguration.new(self.api_key)
 	# for his solution
 	# the user at the end will need to enter it in UI. 
-	GotOpenAi.user_configuration = user_configuration
-	var _gpt_fail_object = GotOpenAi.GetGptCompletion()
-	var response: CompletionResponse = _gpt_fail_object.get_template()\
+	$"../GotOpenAi".user_configuration = user_configuration
+	var _gpt_fail_object = $"../GotOpenAi".GetGptCompletion()
+	var response: CompletionResponse = await _gpt_fail_object.get_template()\
 	.append_message("system", "You are a math teacher.")\
 	.append_message("user", "How to calculate a diferential of a linear function?")\
 	.get_reply()
 	
+	print("Response:")
+	
+	print(response.successful())
 	print(response.choices())
 	print(response.completion_tokens())
 	print(response.completion_tokens_details())
 	print(response.prompt_tokens())
 	
-	var data = "{\"key\": [102020, 1122, 221]}"
-	var d = JSON.parse_string(data)
-	print(d)
-	print(d["key"])
-	print(type_string(typeof(d["key"])))
-	print(d["key"] is Array)
-	print(d["key"][1])
-	print(type_string(typeof(d["key"][1])))
+	print("Usage of choices")
+	var choice_0 = response.choices()[0]["message"]["content"]
+	print(choice_0)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

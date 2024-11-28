@@ -6,7 +6,7 @@ class_name Embedding
 var _configuration: ApiConfiguration
 var _open_ai_request: OpenAiRequestBase
 
-var _model: String = "gpt-3"
+var _model: String = "gpt-3.5-turbo"
 var _encoding_format: String = "float"
 
 func _init(configuration: ApiConfiguration, open_ai_request: OpenAiRequestBase, model: String, encoding_format: String):
@@ -17,7 +17,7 @@ func _init(configuration: ApiConfiguration, open_ai_request: OpenAiRequestBase, 
 
 func get_embedding(text: String) -> EmbeddingResponse:
 	
-	var response: EmbeddingResponse = ResponseFactory.GetEmbeddingResponse(
+	var response: EmbeddingResponse = await ResponseFactory.GetEmbeddingResponse(
 		self._open_ai_request,
 		self._configuration.url(),
 		self._configuration.get_content_authorization_header(), 
