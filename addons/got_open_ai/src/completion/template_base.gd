@@ -2,7 +2,6 @@ extends RefCounted
 
 class_name TemplateBase
 
-const _model_key: String = "model"
 const _messages_key: String = "messages"
 
 var _configuration: ApiConfiguration
