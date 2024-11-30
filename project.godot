@@ -14,6 +14,10 @@ config/name="got_open_ai"
 config/features=PackedStringArray("4.3", "Forward Plus")
 config/icon="res://icon.svg"
 
+[debug]
+
+file_logging/enable_file_logging=true
+
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/got_open_ai/plugin.cfg")
+enabled=PackedStringArray("res://addons/got_open_ai/plugin.cfg", "res://addons/gut/plugin.cfg")
