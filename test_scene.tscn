@@ -10,4 +10,4 @@ script = ExtResource("1_ys6xy")
 
 [node name="Node" type="Node" parent="."]
 script = ExtResource("2_5fki7")
-api_key = "asdasdasdasd"
+api_key = "asdadsasd"
