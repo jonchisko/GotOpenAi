@@ -34,7 +34,7 @@ func _ready() -> void:
 	.get_template()
 	
 	gpt_object.append_static_context("system", "You are a math teacher.")
-	gpt_object.append_static_context_dictionary({"role": "system", "content": "You should help your students."})
+	gpt_object.append_static_context_dictionary({"system": "You should help your students."})
 	gpt_object.append_message("user", 
 	"How to calculate a diferential of a linear function?")
 	
@@ -67,6 +67,9 @@ func _ready() -> void:
 	print(response.completion_tokens())
 	print(response.completion_tokens_details())
 	print(response.prompt_tokens())
+	
+	if not response.successful():
+		return
 	
 	print("Usage of choices")
 	var choice_0 = response.choices()[0]["message"]["content"]
