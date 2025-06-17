@@ -29,12 +29,9 @@ func append_static_context(role: String, content: String):
 	var message = MessageBuilder.new(role).with_content(content).build()
 	self._append_message(message, self._static_context)
 
-func append_static_context_dictionary(role_content: Dictionary):
-	self._append_message_dictionary(role_content, self._static_context)
-
 func append_static_contexts(static_contexts: Array):
 	for static_context in static_contexts:
-		self.append_static_context_dictionary(static_context)
+		self._append_message_dictionary(static_context, self._static_context)
 
 func clear_static_context():
 	self._static_context.clear()
@@ -46,13 +43,9 @@ func prepend_message(role: String, content: String):
 	var message = MessageBuilder.new(role).with_content(content).build()
 	self._message_data.push_front(message)
 	
-func prepend_message_dictionary(role_content: Dictionary):
-	var element = self._get_element_from_role_content(role_content)
-	self._message_data.push_front(element)
-	
 func prepend_messages(messages: Array):
 	for message in messages:
-		self.prepend_message_dictionary(message)
+		self._append_message_dictionary(message, self._message_data, true)
 
 func append_message_with(message: Message):
 	self._append_message(message, self._message_data)
@@ -61,12 +54,9 @@ func append_message(role: String, content: String):
 	var message = MessageBuilder.new(role).with_content(content).build()
 	self._append_message(message, self._message_data)
 	
-func append_message_dictionary(role_content: Dictionary):
-	self._append_message_dictionary(role_content, self._message_data)
-	
 func append_messages(messages: Array):
 	for message in messages:
-		self.append_message_dictionary(message)
+		self._append_message_dictionary(message, self._message_data)
 
 func remove_newest_message():
 	self._message_data.pop_back()
@@ -80,9 +70,12 @@ func clear_all_messages():
 func _append_message(message: Message, data: Array) -> void:
 	data.append(message)
 	
-func _append_message_dictionary(role_content: Dictionary, data: Array) -> void:
+func _append_message_dictionary(role_content: Dictionary, data: Array, prepend: bool = false) -> void:
 	var element = self._get_element_from_role_content(role_content)
-	data.append(element)
+	if prepend:
+		data.push_front(element)
+	else:
+		data.append(element)
 
 func _get_element_from_role_content(role_content: Dictionary) -> Message:
 	if role_content.size() != 1:

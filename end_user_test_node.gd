@@ -34,7 +34,7 @@ func _ready() -> void:
 	.get_template()
 	
 	gpt_object.append_static_context("system", "You are a math teacher.")
-	gpt_object.append_static_context_dictionary({"system": "You should help your students."})
+	gpt_object.append_static_contexts([{"system": "You should help your students."}, {"system": "And do calcs step by step."}])
 	gpt_object.append_message("user", 
 	"How to calculate a diferential of a linear function?")
 	
@@ -52,6 +52,7 @@ func _ready() -> void:
 	.with_n_choices(2)\
 	.with_tool(toolA)\
 	.with_tool(toolB)\
+	.with_auto_tool_choice()\
 	.get_template()
 	
 	var response: CompletionResponse = await _gpt_fail_object\
@@ -84,10 +85,10 @@ func _ready() -> void:
 	print(response.choices()[1].log_probs.content[0].logprob.token)
 	print(response.choices()[1].log_probs.content[0].logprob.log)
 	
-	for msg in _gpt_fail_object.structured_messages():
+	for msg in _gpt_fail_object.get_messages():
 		print(msg.role, msg.content)
 		
-	for msg in _gpt_fail_object.structured_context():
+	for msg in _gpt_fail_object.get_context():
 		print(msg.role, msg.content)
 
 

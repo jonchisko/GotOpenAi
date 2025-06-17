@@ -32,11 +32,11 @@ func build() -> Message:
 	return Message.new(self._role, self._content, self._refusal, self._tool_id, self._tool_calls)
 
 func build_from_dict(data: Dictionary) -> Message:
-	self.role = data["role"]
-	self.content = self._process_optional(data, "content")
-	self.refusal = self._process_optional(data, "refusal")
-	self.tool_id = self._process_optional(data, "tool_id")
-	self.tool_calls = self._process_tool_calls(data)
+	self._role = data["role"]
+	self._content = self._process_optional(data, "content")
+	self._refusal = self._process_optional(data, "refusal")
+	self._tool_id = self._process_optional(data, "tool_id")
+	self._tool_calls = self._process_tool_calls(data)
 	
 	return Message.new(self._role, self._content, self._refusal, self._tool_id, self._tool_calls)
 	
