@@ -20,15 +20,12 @@ func get_reply() -> CompletionResponse:
 	var data: Dictionary = {}
 	
 	var messages: Array = self._message_manager.get_combined_message_data()
-	print(messages)
-	printt(messages[0].role, messages[1].role, messages.size())
 	messages = messages.map(func(message): return message.get_dictionary_form())
-	print(messages)
 	data[self._messages_key] = messages
 	
 	var template_specific_data = self.construct_data()
 	data.merge(template_specific_data)
-	
+
 	var response: CompletionResponse = await ResponseFactory.GetCompletionResponse(
 		self._open_ai_request, 
 		self._configuration.url(),
@@ -64,8 +61,8 @@ func prepend_message(role: String, content: String) -> TemplateBase:
 	self._message_manager.prepend_message_with(message)
 	return self
 
-func prepend_tool_message(tool_id: String, tool_result: String) -> TemplateBase:
-	var message = MessageBuilder.new("tool").with_tool_id(tool_id).with_content(tool_result).build()
+func prepend_tool_message(tool_call_id: String, tool_result: String) -> TemplateBase:
+	var message = MessageBuilder.new("tool").with_tool_call_id(tool_call_id).with_content(tool_result).build()
 	self._message_manager.prepend_message_with(message)
 	return self
 	
@@ -82,8 +79,8 @@ func append_message(role: String, content: String) -> TemplateBase:
 	self._message_manager.append_message_with(message)
 	return self
 
-func append_tool_message(tool_id: String, tool_result: String) -> TemplateBase:
-	var message = MessageBuilder.new("tool").with_tool_id(tool_id).with_content(tool_result).build()
+func append_tool_message(tool_call_id: String, tool_result: String) -> TemplateBase:
+	var message = MessageBuilder.new("tool").with_tool_call_id(tool_call_id).with_content(tool_result).build()
 	self._message_manager.append_message_with(message)
 	return self
 	

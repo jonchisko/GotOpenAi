@@ -57,10 +57,19 @@ func _ready() -> void:
 	
 	var response: CompletionResponse = await _gpt_fail_object\
 	.append_message("system", "You are a math teacher.")\
-	.append_message("user", "How to calculate a diferential of a linear function?")\
+	.append_message("user", "How much is 2+2?")\
 	.get_reply()
 	
 	print("Response:")
+	
+	var message: Message = response.choices()[0].message
+	printt(message.get_dictionary_form(), "::::" + message.tool_calls[0].id)
+	response = await _gpt_fail_object.append_message_with(message).append_tool_message(message.tool_calls[0].id, "4").get_reply()
+	print(response.successful())
+	print(response.choices())
+	printt("RESULT", response.choices()[0].message.get_dictionary_form())
+		
+	
 	
 	print(response.successful())
 	print(response.choices())
