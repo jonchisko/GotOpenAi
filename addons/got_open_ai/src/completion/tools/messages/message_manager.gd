@@ -12,10 +12,10 @@ func _init() -> void:
 	pass
 	
 func messages_to_string() -> String:
-	return JSON.stringify(self._message_data)
+	return JSON.stringify(self._message_data.map(func(x): return x.get_dictionary_form()))
 	
 func context_to_string() -> String:
-	return JSON.stringify(self._static_context)
+	return JSON.stringify(self._static_context.map(func(x): return x.get_dictionary_form()))
 
 func get_combined_message_data() -> Array:
 	var combined: Array[Message] = []
