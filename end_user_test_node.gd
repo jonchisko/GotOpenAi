@@ -64,6 +64,7 @@ func _ready() -> void:
 	
 	var message: Message = response.choices()[0].message
 	printt(message.get_dictionary_form(), "::::" + message.tool_calls[0].id)
+	print(message)
 	response = await _gpt_fail_object.append_message_with(message).append_tool_message(message.tool_calls[0].id, "4").get_reply()
 	print(response.successful())
 	print(response.choices())
